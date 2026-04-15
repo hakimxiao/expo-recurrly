@@ -1,17 +1,8 @@
-import { Text, View } from "react-native";
+import { styled } from "nativewind";
+import { SafeAreaView as RNSafeAreaView } from "react-native-safe-area-context";
+
+const SafeAreaView = styled(RNSafeAreaView);
 
 export default function Index() {
-  return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text className="text-red-500">
-        Edit app/index.tsx to edit this screen.
-      </Text>
-    </View>
-  );
+  return <SafeAreaView className="flex-1 bg-background p-5"></SafeAreaView>;
 }

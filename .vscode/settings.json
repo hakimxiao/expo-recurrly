@@ -3,5 +3,13 @@
     "source.fixAll": "explicit",
     "source.organizeImports": "explicit",
     "source.sortMembers": "explicit"
-  }
+  },
+  "tailwindCSS.experimental.configFile": "./global.css",
+  "tailwindCSS.classFunctions": [
+    "clsx"
+  ],
+  "tailwindCSS.classAttributes": [
+    "class",
+    "className"
+  ]
 }
