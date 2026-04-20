@@ -269,6 +269,12 @@ const SignIn = () => {
             </View>
           </ScrollView>
         </KeyboardAvoidingView>
+        <AppAlert
+          open={alertVisible}
+          title={alertTitle}
+          description={alertMessage}
+          onClose={() => setAlertVisible(false)}
+        />
       </SafeAreaView>
     );
   }
