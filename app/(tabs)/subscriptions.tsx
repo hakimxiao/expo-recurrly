@@ -1,8 +1,9 @@
+import { Feather } from "@expo/vector-icons";
 import SubscriptionCard from "@/components/homeScreen/SubscriptionCard";
 import { useSubscriptionStore } from "@/lib/subscriptionStore";
 import { styled } from "nativewind";
 import { useState } from "react";
-import { FlatList, Text, TextInput, View } from "react-native";
+import { FlatList, Pressable, Text, TextInput, View } from "react-native";
 import { SafeAreaView as RNSafeAreaView } from "react-native-safe-area-context";
 
 const SafeAreaView = styled(RNSafeAreaView);
@@ -28,16 +29,35 @@ const Subscriptions = () => {
         keyExtractor={(item) => item.id}
         ListHeaderComponent={
           <View className="px-5 pt-5">
-            <Text className="text-3xl font-bold text-dark mb-5">
+            <Text className="mb-2 text-3xl font-sans-bold text-primary">
               Subscriptions
             </Text>
-            <TextInput
-              className="bg-card rounded-xl px-4 py-3 text-dark mb-4"
-              placeholder="Seacrh subscriptions..."
-              placeholderTextColor="#666"
-              value={searchQuery}
-              onChangeText={setSearchQuery}
-            />
+            <Text className="mb-5 text-sm font-sans-medium text-muted-foreground">
+              Find active plans quickly by name, category, or plan type.
+            </Text>
+
+            <View className="mb-4 flex-row items-center gap-3 rounded-2xl border border-border bg-card px-4 py-3">
+              <View className="size-10 items-center justify-center rounded-full bg-accent/12">
+                <Feather name="search" size={18} color="#ea7a53" />
+              </View>
+
+              <TextInput
+                className="flex-1 text-base font-sans-medium text-primary"
+                placeholder="Search subscriptions..."
+                placeholderTextColor="rgba(0, 0, 0, 0.45)"
+                value={searchQuery}
+                onChangeText={setSearchQuery}
+              />
+
+              {searchQuery.length > 0 ? (
+                <Pressable
+                  onPress={() => setSearchQuery("")}
+                  className="size-8 items-center justify-center rounded-full bg-muted"
+                >
+                  <Feather name="x" size={16} color="#081126" />
+                </Pressable>
+              ) : null}
+            </View>
           </View>
         }
         renderItem={({ item }) => (
