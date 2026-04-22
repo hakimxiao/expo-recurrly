@@ -1,8 +1,12 @@
-import CreateSubscriptionModal from "@/components/CreateSubscriptionModal";
 import ListHeading from "@/components/homeScreen/ListHeading";
 import SubscriptionCard from "@/components/homeScreen/SubscriptionCard";
 import UpcomingSubscriptionCard from "@/components/homeScreen/UpcomingSubscriptionCard";
-import { HOME_BALANCE, HOME_USER, UPCOMING_SUBSCRIPTIONS } from "@/constants/data";
+import CreateSubscriptionModal from "@/components/subscriptionsScreen/CreateSubscriptionModal";
+import {
+  HOME_BALANCE,
+  HOME_USER,
+  UPCOMING_SUBSCRIPTIONS,
+} from "@/constants/data";
 
 import { icons } from "@/constants/icons";
 import images from "@/constants/images";

@@ -1,8 +1,11 @@
 import { AuthTextField } from "@/components/auth/AuthTextField";
 import { icons } from "@/constants/icons";
+import { formatCurrency } from "@/lib/money";
+import { usePostHogInstance } from "@/lib/posthog";
+import { generateSubscriptionId } from "@/lib/subscriptions";
 import { Feather } from "@expo/vector-icons";
-import dayjs from "dayjs";
 import { clsx } from "clsx";
+import dayjs from "dayjs";
 import { styled } from "nativewind";
 import { useState } from "react";
 import {
@@ -48,7 +51,10 @@ type CreateSubscriptionModalProps = {
   visible: boolean;
 };
 
-const getRenewalDate = (frequency: Subscription["billing"], startDate: string) =>
+const getRenewalDate = (
+  frequency: Subscription["billing"],
+  startDate: string,
+) =>
   dayjs(startDate)
     .add(1, frequency === "Yearly" ? "year" : "month")
     .toISOString();
@@ -60,11 +66,14 @@ export default function CreateSubscriptionModal({
 }: CreateSubscriptionModalProps) {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
-  const [frequency, setFrequency] = useState<Subscription["billing"]>("Monthly");
+  const [frequency, setFrequency] =
+    useState<Subscription["billing"]>("Monthly");
   const [category, setCategory] =
     useState<(typeof CATEGORY_OPTIONS)[number]>("Entertainment");
   const [nameError, setNameError] = useState("");
   const [priceError, setPriceError] = useState("");
+
+  const posthog = usePostHogInstance();
 
   const isSubmitDisabled = name.trim().length === 0 || !(Number(price) > 0);
 
@@ -103,7 +112,7 @@ export default function CreateSubscriptionModal({
     const startDate = dayjs().toISOString();
 
     onCreate({
-      id: `subscription-${Date.now()}`,
+      id: generateSubscriptionId(),
       icon: icons.wallet,
       name: trimmedName,
       price: parsedPrice,
@@ -115,6 +124,13 @@ export default function CreateSubscriptionModal({
       renewalDate: getRenewalDate(frequency, startDate),
       billing: frequency,
       color: CATEGORY_COLORS[category],
+    });
+
+    posthog.capture("subscription_created", {
+      subscription_name: name.trim(),
+      subscription_price: formatCurrency(Number(price)),
+      subscription_frequency: frequency,
+      subscription_category: category,
     });
 
     resetForm();
